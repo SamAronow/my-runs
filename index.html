@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Sams-routes</title>
+<link rel="icon" type="image/png" href="runner.png" sizes="32x32" />
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css" rel="stylesheet" />
+<script src = "routes.js"></script>
+</head>
+<style>
+    body { margin: 0; padding: 0;}
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    .container {
+      display: inline-block;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+      z-index: 999; /* Ensure the overlay is on top of other elements */
+    }
+</style>
+
+<body>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js"></script>
+  <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
+  <div id="map"></div>
+  <div class="overlay" id="overlay"></div>
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtYXJudyIsImEiOiJjbGl1c2F1dDAwOW02M3BueTJwdDViNHY4In0.5F8W4nYLQk7H0xjRONCGkw'; // Replace with your Mapbox access token
+
+var map = new mapboxgl.Map({
+  container: 'map', // Container ID
+  style: 'mapbox://styles/mapbox/satellite-streets-v11', // Mapbox Satellite Streets style
+  center: [-72.667, 41.551358], // Initial center coordinates (longitude, latitude)
+  zoom: 14 // Initial zoom level
+});
+var starts = new Array(0);
+map.on('load', function() {
+  for (let i = 0; i < routes.length; i++) {
+    addLayer(routes[i].features[0].geometry.coordinates[0],routes[i].features[0].start)
+    starts.push(routes[i].features[0].start.substring(0,10))
+}
+}
+);
+console.log(starts)
+function addLayer(coords,name){
+        map.addLayer({
+        "id": name,
+        "type": "line",
+        "source": {
+            "type": "geojson",
+            "data": {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                    "type": "LineString",
+                    "coordinates": coords
+                }
+            }
+        },
+
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "#C21807",
+            "line-width": 2
+        }
+    })
+    }
+  </script>
+    
+</body>
+</html>
