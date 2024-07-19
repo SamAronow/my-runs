@@ -24,6 +24,7 @@
       background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
       z-index: 999; /* Ensure the overlay is on top of other elements */
     }
+    
 </style>
 
 <body>
@@ -40,16 +41,23 @@ var map = new mapboxgl.Map({
   center: [-72.667, 41.551358], // Initial center coordinates (longitude, latitude)
   zoom: 14 // Initial zoom level
 });
-var starts = new Array(0);
 map.on('load', function() {
   for (let i = 0; i < routes.length; i++) {
-    addLayer(routes[i].features[0].geometry.coordinates[0],routes[i].features[0].start)
-    starts.push(routes[i].features[0].start.substring(0,10))
-}
+    /*if (routes[i].features[0].start.substring(0,4)==2022){
+      addLayer(routes[i].features[0].geometry.coordinates[0],routes[i].features[0].start,"#f5cc02")
+    }
+    else if(routes[i].features[0].start.substring(0,4)==2023){
+      addLayer(routes[i].features[0].geometry.coordinates[0],routes[i].features[0].start,"#1007c2")
+    }
+    else if(routes[i].features[0].start.substring(0,4)==2024){
+      addLayer(routes[i].features[0].geometry.coordinates[0],routes[i].features[0].start,"#C21807")
+    }*/
+    addLayer(routes[i].features[0].geometry.coordinates[0],routes[i].features[0].start,"#C21807")
+
+  }
 }
 );
-console.log(starts)
-function addLayer(coords,name){
+function addLayer(coords,name,color){
         map.addLayer({
         "id": name,
         "type": "line",
@@ -70,7 +78,7 @@ function addLayer(coords,name){
             "line-cap": "round"
         },
         "paint": {
-            "line-color": "#C21807",
+            "line-color": color,
             "line-width": 2
         }
     })
