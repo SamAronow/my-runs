@@ -58,47 +58,47 @@ function getQueryParam(param) {
     } else {
         console.log('No scriptName parameter found in the URL');
     }
-map.on('load', function() {
-  for (let i = 0; i < routes.length; i++) {
-    /*if (routes[i].features[0].start.substring(0,4)==2022){
-      addLayer(routes[i].features[0].geometry.coordinates[0],routes[i].features[0].start,"#f5cc02")
-    }
-    else if(routes[i].features[0].start.substring(0,4)==2023){
-      addLayer(routes[i].features[0].geometry.coordinates[0],routes[i].features[0].start,"#1007c2")
-    }
-    else if(routes[i].features[0].start.substring(0,4)==2024){
-      addLayer(routes[i].features[0].geometry.coordinates[0],routes[i].features[0].start,"#C21807")
-    }*/
-    addLayer(routes[i].features[0].geometry.coordinates[0],routes[i].features[0].start,"#C21807")
-  }
-}
-);
-function addLayer(coords,name,color){
-        map.addLayer({
-        "id": name,
-        "type": "line",
-        "source": {
-            "type": "geojson",
-            "data": {
-                "type": "Feature",
-                "properties": {},
-                "geometry": {
-                    "type": "LineString",
-                    "coordinates": coords
-                }
-            }
-        },
+    map.on('load', function() {
+  // Create an empty FeatureCollection
+  let featureCollection = {
+    "type": "FeatureCollection",
+    "features": []
+  };
 
-        "layout": {
-            "line-join": "round",
-            "line-cap": "round"
-        },
-        "paint": {
-            "line-color": color,
-            "line-width": 2
-        }
-    })
+  // Loop through routes and add them to the FeatureCollection
+  for (let i = 0; i < routes.length; i++) {
+    let route = routes[i];
+    featureCollection.features.push({
+      "type": "Feature",
+      "properties": {
+        "name": route.features[0].start
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": route.features[0].geometry.coordinates[0]
+      }
+    });
+  }
+
+  // Add a single layer for all routes
+  map.addLayer({
+    "id": "all-routes",
+    "type": "line",
+    "source": {
+      "type": "geojson",
+      "data": featureCollection
+    },
+    "layout": {
+      "line-join": "round",
+      "line-cap": "round"
+    },
+    "paint": {
+      "line-color": "#C21807",
+      "line-width": 2
     }
+  });
+});
+
   </script>
     
 </body>
