@@ -59,10 +59,9 @@ function getQueryParam(param) {
         console.log('No scriptName parameter found in the URL');
     }
     map.on('load', function() {
-      setTimeout(() => {
-  // Code to execute after 1.5 seconds
-  console.log("Waiting for load");
-}, 1500);
+if (typeof routes == 'undefined'){
+  console.log("error")
+}
   // Create an empty FeatureCollection
   let featureCollection = {
     "type": "FeatureCollection",
