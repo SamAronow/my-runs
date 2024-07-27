@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Route-Visualizer</title>
+<title>Sams-routes</title>
 <link rel="icon" type="image/png" href="runner.png" sizes="32x32" />
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css" rel="stylesheet" />
@@ -59,6 +59,10 @@ function getQueryParam(param) {
         console.log('No scriptName parameter found in the URL');
     }
     map.on('load', function() {
+      setTimeout(() => {
+  // Code to execute after 1.5 seconds
+  console.log("Waiting for load");
+}, 1500);
   // Create an empty FeatureCollection
   let featureCollection = {
     "type": "FeatureCollection",
@@ -94,7 +98,7 @@ function getQueryParam(param) {
     },
     "paint": {
       "line-color": "#C21807",
-      "line-width": 2
+      "line-width": 1.7
     }
   });
 });
