@@ -60,7 +60,46 @@ function getQueryParam(param) {
     }
     map.on('load', function() {
 if (typeof routes == 'undefined'){
-  console.log("error")
+  setTimeout(() => {
+  // Create an empty FeatureCollection
+  let featureCollection = {
+    "type": "FeatureCollection",
+    "features": []
+  };
+
+  // Loop through routes and add them to the FeatureCollection
+  for (let i = 0; i < routes.length; i++) {
+    let route = routes[i];
+    featureCollection.features.push({
+      "type": "Feature",
+      "properties": {
+        "name": route.features[0].start
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": route.features[0].geometry.coordinates[0]
+      }
+    });
+  }
+
+  // Add a single layer for all routes
+  map.addLayer({
+    "id": "all-routes",
+    "type": "line",
+    "source": {
+      "type": "geojson",
+      "data": featureCollection
+    },
+    "layout": {
+      "line-join": "round",
+      "line-cap": "round"
+    },
+    "paint": {
+      "line-color": "#C21807",
+      "line-width": 1.7
+    }
+  });
+}, 1500);
 }
   // Create an empty FeatureCollection
   let featureCollection = {
