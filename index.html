@@ -59,7 +59,7 @@ function getQueryParam(param) {
         console.log('No scriptName parameter found in the URL');
     }
     map.on('load', function() {
-if (typeof routes == 'undefined'){
+while (typeof routes == 'undefined'){
   setTimeout(() => {
   // Create an empty FeatureCollection
   let featureCollection = {
@@ -99,7 +99,7 @@ if (typeof routes == 'undefined'){
       "line-width": 1.7
     }
   });
-}, 1500);
+}, 1000);
 }
   // Create an empty FeatureCollection
   let featureCollection = {
