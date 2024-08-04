@@ -29,50 +29,49 @@
 <body>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js"></script>
   <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
-  <script src = "midd-bound-coords.js"></script>
+  <script src = "people/midd-bound-coords.js"></script>
   <div id="map"></div>
   <div class="overlay" id="overlay"></div>
   <script>
-    mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtYXJudyIsImEiOiJjbGl1c2F1dDAwOW02M3BueTJwdDViNHY4In0.5F8W4nYLQk7H0xjRONCGkw'; // Replace with your Mapbox access token
+  mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtYXJudyIsImEiOiJjbGl1c2F1dDAwOW02M3BueTJwdDViNHY4In0.5F8W4nYLQk7H0xjRONCGkw'; // Replace with your Mapbox access token
 
-var map = new mapboxgl.Map({
+  var map = new mapboxgl.Map({
   container: 'map', // Container ID
   style: 'mapbox://styles/mapbox/satellite-streets-v11', // Mapbox Satellite Streets style
   center: [-72.667, 41.551358], // Initial center coordinates (longitude, latitude)
   zoom: 14 // Initial zoom level
-});
+  });
 
 
-function getQueryParam(param) {
-        let urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
-    }
+  function getQueryParam(param) {
+    let urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
 
-    // Example usage: Get the 'person' parameter
-    let scriptName = "people/"+getQueryParam('person');
+  let scriptName = "people/"+getQueryParam('person');
 
-    // If the scriptName parameter exists, create a script element
-    if (scriptName) {
-        let scriptElement = document.createElement('script');
-        scriptElement.src = scriptName+".js";
-        document.head.appendChild(scriptElement);
-    } else {
-        console.log('No scriptName parameter found in the URL');
-    }
-    map.on('load', function() {
-      map.addLayer({
-        "id": "border",
-        "type": "line",
-        "source": {
-            "type": "geojson",
-            "data": {
-                "type": "Feature",
-                "properties": {},
-                "geometry": {
-                    "type": "LineString",
-                    "coordinates": boundaryCoords
-                }
-            }
+  if (scriptName) {
+    let scriptElement = document.createElement('script');
+    scriptElement.src = scriptName+".js";
+    document.head.appendChild(scriptElement);
+  } 
+  else {
+    console.log('No scriptName parameter found in the URL');
+  }
+  map.on('load', function() {
+    map.addLayer({
+      "id": "border",
+      "type": "line",
+      "source": {
+          "type": "geojson",
+          "data": {
+              "type": "Feature",
+              "properties": {},
+              "geometry": {
+                  "type": "LineString",
+                  "coordinates": boundaryCoords
+              }
+          }
         },
 
         "layout": {
@@ -84,87 +83,52 @@ function getQueryParam(param) {
             "line-width": 0
         }
     })
-if (typeof routes == 'undefined'){
-  setTimeout(() => {
-  // Create an empty FeatureCollection
-  let featureCollection = {
-    "type": "FeatureCollection",
-    "features": []
-  };
-
-  // Loop through routes and add them to the FeatureCollection
-  for (let i = 0; i < routes.length; i++) {
-    let route = routes[i];
-    featureCollection.features.push({
-      "type": "Feature",
-      "properties": {
-        "name": route.features[0].start
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": route.features[0].geometry.coordinates[0]
-      }
-    });
-  }
-
-  // Add a single layer for all routes
-  map.addLayer({
-    "id": "all-routes",
-    "type": "line",
-    "source": {
-      "type": "geojson",
-      "data": featureCollection
-    },
-    "layout": {
-      "line-join": "round",
-      "line-cap": "round"
-    },
-    "paint": {
-      "line-color": "#C21807",
-      "line-width": 1.7
+    if (typeof routes == 'undefined'){
+      setTimeout(() => {addRoutes()}, 3000);
     }
-  });
-}, 3000);
-}
-  // Create an empty FeatureCollection
-  let featureCollection = {
-    "type": "FeatureCollection",
-    "features": []
-  };
-
-  // Loop through routes and add them to the FeatureCollection
-  for (let i = 0; i < routes.length; i++) {
-    let route = routes[i];
-    featureCollection.features.push({
-      "type": "Feature",
-      "properties": {
-        "name": route.features[0].start
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": route.features[0].geometry.coordinates[0]
-      }
-    });
-  }
-
-  // Add a single layer for all routes
-  map.addLayer({
-    "id": "all-routes",
-    "type": "line",
-    "source": {
-      "type": "geojson",
-      "data": featureCollection
-    },
-    "layout": {
-      "line-join": "round",
-      "line-cap": "round"
-    },
-    "paint": {
-      "line-color": "#C21807",
-      "line-width": 1.7
-    }
-  });
+    addRoutes()
 });
+
+function addRoutes(){
+  // Create an empty FeatureCollection
+  let featureCollection = {
+    "type": "FeatureCollection",
+    "features": []
+  };
+
+  // Loop through routes and add them to the FeatureCollection
+  for (let i = 0; i < routes.length; i++) {
+    let route = routes[i];
+    featureCollection.features.push({
+      "type": "Feature",
+      "properties": {
+        "name": route.features[0].start
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": route.features[0].geometry.coordinates[0]
+      }
+    });
+  }
+
+  // Add a single layer for all routes
+  map.addLayer({
+    "id": "all-routes",
+    "type": "line",
+    "source": {
+      "type": "geojson",
+      "data": featureCollection
+    },
+    "layout": {
+      "line-join": "round",
+      "line-cap": "round"
+    },
+    "paint": {
+      "line-color": "#C21807",
+      "line-width": 1.7
+    }
+  });
+}
 
   </script>
     
