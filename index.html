@@ -23,7 +23,7 @@
       background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
       z-index: 999; /* Ensure the overlay is on top of other elements */
     }
-    
+
 </style>
 
 <body>
@@ -54,7 +54,7 @@
     let scriptElement = document.createElement('script');
     scriptElement.src = scriptName+".js";
     document.head.appendChild(scriptElement);
-  } 
+  }
   else {
     console.log('No scriptName parameter found in the URL');
   }
@@ -87,7 +87,17 @@
       setTimeout(() => {addRoutes()}, 3000);
     }
     addRoutes()
-});
+  });
+
+  function loadRuns(){
+    if (typeof routes == 'undefined'){
+      setTimeout(() => {loadRuns()}, 500);
+    }
+    else{
+      addRoutes()
+      return
+    }
+  }
 
 function addRoutes(){
   // Create an empty FeatureCollection
@@ -131,6 +141,6 @@ function addRoutes(){
 }
 
   </script>
-    
+
 </body>
 </html>
