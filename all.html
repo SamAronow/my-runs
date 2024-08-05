@@ -30,8 +30,6 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js"></script>
   <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
   <script src = "midd-bound-coords.js"></script>
-  <script src = "wes-all1.js"></script>
-  <script src = "wes-all2.js"></script>
   <div id="map"></div>
   <div class="overlay" id="overlay"></div>
   <script>
@@ -44,50 +42,53 @@
   zoom: 14 // Initial zoom level
   });
 
+  names = ["Bruce", "Calder", "Calhoun", "Chid", "Dale", "Don", "Dylan", "Evan", "Foge", "Jude", "Kerm", "Lara", "Levine", "Mike", "Miles", "Mckinney","Noah", "Owen", "Phil", "Ratner", "Rob", "Sam", "Taffet", "Tony","Will", "Zallen"]
+  for (i=0; i<names.length; i++){
+        let scriptElement = document.createElement('script');
+        path="people/wes"+names[i]+".js";
+        scriptElement.src = path;
+        document.head.appendChild(scriptElement);
+    }
   map.on('load', function() {
     setTimeout(() => {addRoutes()}, 7500);
   });
 
   
 
-function addRoutes(array,name){
+function addRoutes(){
   // Create an empty FeatureCollection
-  names = ["bruce", "calder", "calhoun", "dale", "don", "dylan", "evan", "foge", "jude", "kerm", "lara", "levine", "mike", "miles", "mckinney","noah", "owen", "phil", "ratner", "rob", "sam", "taffet", "tony","will", "zallen"]
   var routes = new Array(0);
 
-  for (name in names){
-    console.log(names)
+  for (i=0; i<names.length; i++){
+        name = "wes"+names[i]
+        var temp = window[name];
+        let featureCollection = {
+             "type": "FeatureCollection",
+            "features": []
+        };
+        for (let i = 0; i < temp.length; i++) {
+            let route = temp[i];
+            featureCollection.features.push({
+                "type": "Feature",
+                "properties": {
+                    "name": route.features[0].start
+                },
+                "geometry": {
+                    "type": "LineString",
+                    "coordinates": route.features[0].geometry.coordinates[0]
+                }
+            });
+        }
+        routes.push([name,temp,featureCollection])
   }
-  var test = window["routes"];
-  console.log(test);
-
-  let featureCollection = {
-    "type": "FeatureCollection",
-    "features": []
-  };
-
-  // Loop through routes and add them to the FeatureCollection
-  for (let i = 0; i < array.length; i++) {
-    let route = array[i];
-    featureCollection.features.push({
-      "type": "Feature",
-      "properties": {
-        "name": route.features[0].start
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": route.features[0].geometry.coordinates[0]
-      }
-    });
-  }
-
-  // Add a single layer for all routes
-  map.addLayer({
-    "id": name,
+  console.log(routes)
+  for (i=0; i<names.length; i++){
+    map.addLayer({
+    "id": routes[i][0],
     "type": "line",
     "source": {
       "type": "geojson",
-      "data": featureCollection
+      "data": routes[i][2]
     },
     "layout": {
       "line-join": "round",
@@ -98,6 +99,7 @@ function addRoutes(array,name){
       "line-width": 1.7
     }
   });
+  }
 }
 
   </script>

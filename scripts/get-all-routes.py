@@ -80,7 +80,7 @@ def add_routes_to_file(access_token,page,file_path):
 
 if __name__ == "__main__":
     access_token = '767560e712133877e6188d85f21103b9e0b19628'
-    num_pages = 6 #this is 10 for me since i have just under 1000 runs and 100 per page so 10 pages.
+    num_pages = 1 #this is 10 for me since i have just under 1000 runs and 100 per page so 10 pages.
     page = num_pages
     filename="../people/chid.js"
     while page>0:

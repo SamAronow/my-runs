@@ -14,7 +14,7 @@ routes=[]
 # Read the input JSON file
 #names = ["bruce", "calder", "calhoun", "dale", "don", "dylan", "evan", "foge", "jude", "kerm", "lara", "levine"
 # , "mike", "miles", "mckinney","noah", "owen", "phil", "ratner", "rob", "sam", "taffet", "tony","will", "zallen"]
-names =["tony"]
+names =["chid"]
 for name in names:
     file='../people/'+name+".js"
     with open(file, 'r') as infile:
