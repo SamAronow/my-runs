@@ -24,13 +24,26 @@
       z-index: 999; /* Ensure the overlay is on top of other elements */
     }
 
+#error-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 5;
+}
+
 </style>
 
 <body>
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js"></script>
   <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
   <script src = "midd-bound-coords.js"></script>
   <div id="map"></div>
+  <div id = "error-message">Loading in all 10,000 runs, it should take about 5 seconds</div>
   <div class="overlay" id="overlay"></div>
   <script>
   mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtYXJudyIsImEiOiJjbGl1c2F1dDAwOW02M3BueTJwdDViNHY4In0.5F8W4nYLQk7H0xjRONCGkw'; // Replace with your Mapbox access token
@@ -50,10 +63,11 @@
         document.head.appendChild(scriptElement);
     }
   map.on('load', function() {
-    setTimeout(() => {addRoutes()}, 7500);
+    setTimeout(function() {document.getElementById('error-message').style.display = 'none';}, 5000);
+    setTimeout(() => {addRoutes()}, 5000);
   });
 
-  
+
 
 function addRoutes(){
   // Create an empty FeatureCollection
