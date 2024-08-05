@@ -1,6 +1,7 @@
-names = ["bruce", "calder", "calhoun", "dale", "don", "dylan", "evan", "foge", "jude", "kerm", "lara", "levine","mckinney", "mike", "miles", "noah", "owen", "phil", "ratner","rob", "sam", "taffet", "will", "zallen"]
+#names = ["bruce", "calder", "calhoun", "dale", "don", "dylan", "evan", "foge", "jude", "kerm", "lara", "levine"]
+names = ["mckinney", "mike", "miles", "noah", "owen", "phil", "ratner","rob", "sam", "taffet", "will", "zallen"]
 # Open wes-all.js in write mode
-with open('../people/wes-all.js', 'w') as all_file:
+with open('../wes-all.js', 'w') as all_file:
     for name in names:
         # Write the name as a comment
         all_file.write(f'// {name}\n')
