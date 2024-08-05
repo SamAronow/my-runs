@@ -45,35 +45,22 @@
   });
 
   map.on('load', function() {
-    map.addLayer({
-      "id": "border",
-      "type": "line",
-      "source": {
-          "type": "geojson",
-          "data": {
-              "type": "Feature",
-              "properties": {},
-              "geometry": {
-                  "type": "LineString",
-                  "coordinates": boundaryCoords
-              }
-          }
-        },
-
-        "layout": {
-            "line-join": "round",
-            "line-cap": "round"
-        },
-        "paint": {
-            "line-color": "#1a07c2",
-            "line-width": 0
-        }
-    })
-    //loadRuns1()
+    setTimeout(() => {addRoutes()}, 7500);
   });
+
+  
 
 function addRoutes(array,name){
   // Create an empty FeatureCollection
+  names = ["bruce", "calder", "calhoun", "dale", "don", "dylan", "evan", "foge", "jude", "kerm", "lara", "levine", "mike", "miles", "mckinney","noah", "owen", "phil", "ratner", "rob", "sam", "taffet", "tony","will", "zallen"]
+  var routes = new Array(0);
+
+  for (name in names){
+    console.log(names)
+  }
+  var test = window["routes"];
+  console.log(test);
+
   let featureCollection = {
     "type": "FeatureCollection",
     "features": []

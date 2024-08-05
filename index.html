@@ -33,6 +33,7 @@
   <div id="map"></div>
   <div class="overlay" id="overlay"></div>
   <script>
+
   mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtYXJudyIsImEiOiJjbGl1c2F1dDAwOW02M3BueTJwdDViNHY4In0.5F8W4nYLQk7H0xjRONCGkw'; // Replace with your Mapbox access token
 
   var map = new mapboxgl.Map({
@@ -41,7 +42,6 @@
   center: [-72.667, 41.551358], // Initial center coordinates (longitude, latitude)
   zoom: 14 // Initial zoom level
   });
-
 
   function getQueryParam(param) {
     let urlParams = new URLSearchParams(window.location.search);
@@ -61,30 +61,6 @@
     console.log('No scriptName parameter found in the URL');
   }
   map.on('load', function() {
-    map.addLayer({
-      "id": "border",
-      "type": "line",
-      "source": {
-          "type": "geojson",
-          "data": {
-              "type": "Feature",
-              "properties": {},
-              "geometry": {
-                  "type": "LineString",
-                  "coordinates": boundaryCoords
-              }
-          }
-        },
-
-        "layout": {
-            "line-join": "round",
-            "line-cap": "round"
-        },
-        "paint": {
-            "line-color": "#1a07c2",
-            "line-width": 0
-        }
-    })
     loadRuns()
   });
 
@@ -105,8 +81,6 @@ function addRoutes(){
     "features": []
   };
 
-  var test = window["routes"];
-  console.log(test);
   // Loop through routes and add them to the FeatureCollection
   for (let i = 0; i < routes.length; i++) {
     let route = routes[i];
