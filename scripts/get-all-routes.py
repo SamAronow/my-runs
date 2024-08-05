@@ -7,7 +7,7 @@ import time
 def get_activities(access_token,page):
     url = 'https://www.strava.com/api/v3/athlete/activities'
     headers = {'Authorization': f'Bearer {access_token}'}
-    params = {'per_page': 100, 'page': page}
+    params = {'per_page': 145, 'page': page}
 
     response = requests.get(url, headers=headers, params=params)
 
@@ -79,10 +79,10 @@ def add_routes_to_file(access_token,page,file_path):
         print("No activities found.")
 
 if __name__ == "__main__":
-    access_token = '88578c9b25854376e3cb5bdb6e2bb3d4d6490cf6'
-    num_pages = 3 #this is 10 for me since i have just under 1000 runs and 100 per page so 10 pages.
+    access_token = '767560e712133877e6188d85f21103b9e0b19628'
+    num_pages = 6 #this is 10 for me since i have just under 1000 runs and 100 per page so 10 pages.
     page = num_pages
-    filename="owen.js"
+    filename="../people/chid.js"
     while page>0:
         print(page)
         add_routes_to_file(access_token,page,filename)
@@ -91,6 +91,7 @@ if __name__ == "__main__":
             print("done")
             break
         print()
+        break
         print(page)
         print()
         add_routes_to_file(access_token,page,filename)

@@ -69,29 +69,8 @@
             "line-width": 0
         }
     })
-    loadRuns1()
+    //loadRuns1()
   });
-
-  function loadRuns1(){
-    if (typeof routes1 == 'undefined'){
-      setTimeout(() => {loadRuns1()}, 500);
-    }
-    else{
-      addRoutes(routes1,"1")
-      loadRuns2()
-      return
-    }
-  }
-
-  function loadRuns2(){
-    if (typeof routes2 == 'undefined'){
-      setTimeout(() => {loadRuns2()}, 500);
-    }
-    else{
-      addRoutes(routes2,"2")
-      return
-    }
-  }
 
 function addRoutes(array,name){
   // Create an empty FeatureCollection

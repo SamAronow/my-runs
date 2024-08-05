@@ -48,7 +48,9 @@
     return urlParams.get(param);
   }
 
-  let scriptName = "people/"+getQueryParam('person');
+  person = getQueryParam('person');
+
+  let scriptName = "people/"+person;
 
   if (scriptName) {
     let scriptElement = document.createElement('script');
@@ -103,6 +105,8 @@ function addRoutes(){
     "features": []
   };
 
+  var test = window["routes"];
+  console.log(test);
   // Loop through routes and add them to the FeatureCollection
   for (let i = 0; i < routes.length; i++) {
     let route = routes[i];
