@@ -1,20 +1,23 @@
 import json
 from shapely.geometry import Point, Polygon
+import os
 
-polygon_coordinates = [[-72.57495,41.5046],[-72.57413,41.51164],[-72.56323,41.516],[-72.53239,41.55149],[-72.3317,41.62854],[-72.32898,41.63952],[-72.33702,41.64217],[-72.37603,41.63288],[-72.45404,41.60779],[-72.48255,41.64195],[-72.52741,41.6618],[-72.60467,41.64994],[-72.64271,41.60874],[-72.64271,41.59795],[-72.65299,41.58801],[-72.7029,41.58276],[-72.76191,41.58501],[-72.77987,41.55031],[-72.74702,41.50231],[-72.67862,41.4543],[-72.62274,41.46335],[-72.59843,41.49002],[-72.57495,41.5046]]
+midd_coordinates = [[-72.57495,41.5046],[-72.57413,41.51164],[-72.56323,41.516],[-72.53239,41.55149],[-72.3317,41.62854],[-72.32898,41.63952],[-72.33702,41.64217],[-72.37603,41.63288],[-72.45404,41.60779],[-72.48255,41.64195],[-72.52741,41.6618],[-72.60467,41.64994],[-72.64271,41.60874],[-72.64271,41.59795],[-72.65299,41.58801],[-72.7029,41.58276],[-72.76191,41.58501],[-72.77987,41.55031],[-72.74702,41.50231],[-72.67862,41.4543],[-72.62274,41.46335],[-72.59843,41.49002],[-72.57495,41.5046]]
+freeman_coordinates = [[-72.66193,41.55227],[-72.66472,41.55146],[-72.66588,41.55034],[-72.66898,41.54992],[-72.67132,41.54862],[-72.67069,41.54481],[-72.66898,41.54443],[-72.66685,41.54278],[-72.66699,41.533],[-72.66598,41.53292],[-72.66542,41.53466],[-72.6656,41.54296],[-72.65922,41.54382],[-72.65881,41.54865],[-72.65779,41.55103],[-72.65806,41.55395],[-72.66188,41.55229]]
 
-bounding_polygon = Polygon(polygon_coordinates)
+midd_polygon = Polygon(midd_coordinates)
+freeman_polygon = Polygon(freeman_coordinates)
 
 # Function to check if a coordinate is within the bounding box
 def within_filter(lon,lat):
     point = Point(lon, lat)
-    return bounding_polygon.contains(point)
+    return midd_polygon.contains(point) and not freeman_polygon.contains(point)
 
 routes=[]
 # Read the input JSON file
-#names = ["bruce", "calder", "calhoun", "dale", "don", "dylan", "evan", "foge", "george","jude", "kerm", "lara", "levine"
+#names = ["bruce", "calder", "calhoun","chid", "dale", "don", "dylan", "evan", "foge", "george","jude", "kerm", "lara", "levine"
 # , "mike", "miles", "mckinney","noah", "owen", "phil", "ratner", "rob", "sam", "taffet", "tony","will", "zallen"]
-names =["george"]
+names =["zallen"]
 for name in names:
     file='../people/'+name+".js"
     with open(file, 'r') as infile:
@@ -32,15 +35,14 @@ for name in names:
             print(f"Error decoding JSON on line: {i}")
             print(f"Error message: {e}")
 
-    file_path="../people/wes-"+name+".js"
-    with open(file_path, "w") as file:
+    file_path="../people/wes_"+name+".js"
+
+    with open("temp.js", "w") as file:
         file.write("var routes = new Array(0);\n")  # Initialize the routes array
 
         for route in routes:
             inside=False
             for cor in route['features'][0]['geometry']['coordinates'][0]:
-                #lon = route['features'][0]['geometry']['coordinates'][0][0][0]
-                #lat = route['features'][0]['geometry']['coordinates'][0][0][1]
                 lon=cor[0]
                 lat=cor[1]
             
@@ -49,3 +51,13 @@ for name in names:
             if inside:
                 json_str = json.dumps(route)  # Serialize the JSON object
                 file.write(f"\nroutes.push({json_str});")
+
+    with open('temp.js', 'r') as file:
+        content = file.read()
+
+    content = content.replace('routes', 'wes_'+name)
+
+    with open(file_path, 'w') as file:
+        file.write(content)
+
+    os.remove("temp.js")

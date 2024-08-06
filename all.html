@@ -55,10 +55,11 @@
   zoom: 14 // Initial zoom level
   });
 
-  names = ["Bruce", "Calder", "Calhoun", "Chid", "Dale", "Don", "Dylan", "Evan", "Foge", "Jude", "Kerm", "Lara", "Levine", "Mike", "Miles", "Mckinney","Noah", "Owen", "Phil", "Ratner", "Rob", "Sam", "Taffet", "Tony","Will", "Zallen"]
+  names = ["Bruce", "Calder", "Calhoun", "Chid", "Dale", "Don", "Dylan", "Evan", "Foge", "George","Jude", "Kerm", "Lara", "Levine", "Mike", "Miles", "Mckinney","Noah", "Owen", "Phil", "Ratner", "Rob", "Sam", "Taffet", "Tony","Will", "Zallen"]
   for (i=0; i<names.length; i++){
         let scriptElement = document.createElement('script');
-        path="people/wes"+names[i]+".js";
+        path="people/wes_"+names[i].toLowerCase()+".js";
+        //path = "people/wes"+names[i]+".js";
         scriptElement.src = path;
         document.head.appendChild(scriptElement);
     }
@@ -86,15 +87,18 @@
 function addRoutes(){
   // Create an empty FeatureCollection
   var routes = new Array(0);
-
+  total=0
   for (i=0; i<names.length; i++){
-        name = "wes"+names[i]
+        name = "wes_"+names[i].toLowerCase()
+        //name = "wes"+names[i]
+        console.log(name)
         var temp = window[name];
         let featureCollection = {
              "type": "FeatureCollection",
             "features": []
         };
         for (let i = 0; i < temp.length; i++) {
+            total++
             let route = temp[i];
             featureCollection.features.push({
                 "type": "Feature",
@@ -109,6 +113,7 @@ function addRoutes(){
         }
         routes.push([name,temp,featureCollection])
   }
+  console.log(total)
   for (i=0; i<names.length; i++){
     map.addLayer({
     "id": routes[i][0],
