@@ -1,5 +1,4 @@
-#names = ["bruce", "calder", "calhoun", "dale", "don", "dylan", "evan", "foge", "jude", "kerm", "lara", "levine"]
-names = ["mckinney", "mike", "miles", "noah", "owen", "phil", "ratner","rob", "sam", "taffet", "will", "zallen"]
+names =["bruce", "calder", "calhoun","chid", "dale", "don", "dylan", "evan", "foge", "george","jude", "kerm", "lara", "levine", "mike", "miles", "mckinney","noah", "owen", "phil", "ratner", "rob", "sam", "taffet", "tony", "will", "zallen"]
 # Open wes-all.js in write mode
 with open('../wes-all.js', 'w') as all_file:
     for name in names:
