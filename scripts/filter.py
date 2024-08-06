@@ -12,9 +12,9 @@ def within_filter(lon,lat):
 
 routes=[]
 # Read the input JSON file
-#names = ["bruce", "calder", "calhoun", "dale", "don", "dylan", "evan", "foge", "jude", "kerm", "lara", "levine"
+#names = ["bruce", "calder", "calhoun", "dale", "don", "dylan", "evan", "foge", "george","jude", "kerm", "lara", "levine"
 # , "mike", "miles", "mckinney","noah", "owen", "phil", "ratner", "rob", "sam", "taffet", "tony","will", "zallen"]
-names =["chid"]
+names =["george"]
 for name in names:
     file='../people/'+name+".js"
     with open(file, 'r') as infile:

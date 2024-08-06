@@ -79,10 +79,10 @@ def add_routes_to_file(access_token,page,file_path):
         print("No activities found.")
 
 if __name__ == "__main__":
-    access_token = '767560e712133877e6188d85f21103b9e0b19628'
+    access_token = '2b96622a85505e92ce204af16e7fa7a2ec54e0ce'
     num_pages = 1 #this is 10 for me since i have just under 1000 runs and 100 per page so 10 pages.
     page = num_pages
-    filename="../people/chid.js"
+    filename="../people/george.js"
     while page>0:
         print(page)
         add_routes_to_file(access_token,page,filename)
