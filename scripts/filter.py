@@ -45,7 +45,7 @@ for name in names:
 
     file_path="../people/wes_"+name+".js"
 
-    with open("temp.js", "w") as file:
+    with open(file_path, "w") as file:
         file.write("var routes = new Array(0);\n")  # Initialize the routes array
 
         for route in routes:
@@ -59,7 +59,7 @@ for name in names:
             if inside:
                 json_str = json.dumps(route)  # Serialize the JSON object
                 file.write(f"\nroutes.push({json_str});")
-
+"""
     with open('temp.js', 'r') as file:
         content = file.read()
 
@@ -69,3 +69,5 @@ for name in names:
         file.write(content)
 
     os.remove("temp.js")
+
+"""
