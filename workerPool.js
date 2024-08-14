@@ -1,35 +1,43 @@
 // workerPool.js
-console.log("hi")
-const numberOfWorkers = navigator.hardwareConcurrency || 4;
-const workers = [];
+console.log("x")
+export async function processRoutes(routes, callback) {
+  // Create a pool of workers
+  const numWorkers = navigator.hardwareConcurrency || 4; // Use the number of available cores or 4
+  const workers = [];
+  const tasks = [];
+  
+  // Create a pool of workers
+  for (let i = 0; i < numWorkers; i++) {
+    const worker = new Worker('worker.js');
+    workers.push(worker);
+  }
 
-for (let i = 0; i < numberOfWorkers; i++) {
-  workers.push(new Worker('worker.js'));
-}
+  // Distribute tasks
+  const chunkSize = Math.ceil(routes.length / numWorkers);
+  for (let i = 0; i < numWorkers; i++) {
+    const chunk = routes.slice(i * chunkSize, (i + 1) * chunkSize);
+    tasks.push(new Promise((resolve, reject) => {
+      const worker = workers[i];
+      worker.postMessage({ type: 'process', chunk });
+      worker.onmessage = (event) => {
+        resolve(event.data);
+      };
+      worker.onerror = (error) => {
+        reject(error);
+      };
+    }));
+  }
 
-function processRoutes(routes, callback) {
-  let completedWorkers = 0;
-  let featureCollections = [];
-  const chunkSize = Math.ceil(routes.length / numberOfWorkers);
-
-  workers.forEach((worker, index) => {
-    const start = index * chunkSize;
-    const end = Math.min(start + chunkSize, routes.length);
-    const chunk = routes.slice(start, end);
-
-    worker.onmessage = function(event) {
-      featureCollections.push(event.data);
-      completedWorkers++;
-
-      if (completedWorkers === numberOfWorkers) {
-        const mergedFeatureCollection = {
-          "type": "FeatureCollection",
-          "features": featureCollections.flatMap(fc => fc.features)
-        };
-        callback(mergedFeatureCollection);
-      }
+  try {
+    const results = await Promise.all(tasks);
+    const featureCollection = {
+      type: 'FeatureCollection',
+      features: results.flat()
     };
-
-    worker.postMessage({ routes: chunk });
-  });
+    callback(featureCollection);
+  } catch (error) {
+    console.error('Error processing routes:', error);
+  } finally {
+    workers.forEach(worker => worker.terminate());
+  }
 }

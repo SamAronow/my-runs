@@ -8,8 +8,73 @@
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css" rel="stylesheet" />
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js"></script>
   <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
-  <script src="workerPool.js" type="module"></script>
   <script src="midd-bound-coords.js"></script>
+  <script type="module">
+    import { processRoutes } from './workerPool.js';
+
+    mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtYXJudyIsImEiOiJjbGl1c2F1dDAwOW02M3BueTJwdDViNHY4In0.5F8W4nYLQk7H0xjRONCGkw'; // Replace with your Mapbox access token
+
+    const map = new mapboxgl.Map({
+      container: 'map', // Container ID
+      style: 'mapbox://styles/mapbox/satellite-streets-v11', // Mapbox Satellite Streets style
+      center: [-72.667, 41.551358], // Initial center coordinates (longitude, latitude)
+      zoom: 14 // Initial zoom level
+    });
+
+    function getQueryParam(param) {
+      let urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    const person = getQueryParam('person');
+    const scriptName = `people/${person}`;
+
+    if (scriptName) {
+      const scriptElement = document.createElement('script');
+      scriptElement.src = `${scriptName}.js`;
+      document.head.appendChild(scriptElement);
+    } else {
+      console.log('No scriptName parameter found in the URL');
+    }
+
+    map.on('load', function() {
+      loadRuns();
+    });
+
+    function loadRuns() {
+      if (typeof routes === 'undefined') {
+        setTimeout(loadRuns, 500);
+      } else {
+        processRoutes(routes, addRoutes);
+      }
+    }
+
+    function addRoutes(featureCollection) {
+      if (map.getLayer('all-routes')) {
+        map.removeLayer('all-routes');
+        map.removeSource('all-routes');
+      }
+
+      map.addSource('all-routes', {
+        type: 'geojson',
+        data: featureCollection
+      });
+
+      map.addLayer({
+        'id': 'all-routes',
+        'type': 'line',
+        'source': 'all-routes',
+        'layout': {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        'paint': {
+          'line-color': '#C21807',
+          'line-width': 1.7
+        }
+      });
+    }
+  </script>
   <style>
     body { margin: 0; padding: 0;}
     #map { position: absolute; top: 0; bottom: 0; width: 100%; }
@@ -31,63 +96,5 @@
 <body>
   <div id="map"></div>
   <div class="overlay" id="overlay"></div>
-  <script>
-    mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtYXJudyIsImEiOiJjbGl1c2F1dDAwOW02M3BueTJwdDViNHY4In0.5F8W4nYLQk7H0xjRONCGkw'; // Replace with your Mapbox access token
-
-    var map = new mapboxgl.Map({
-      container: 'map', // Container ID
-      style: 'mapbox://styles/mapbox/satellite-streets-v11', // Mapbox Satellite Streets style
-      center: [-72.667, 41.551358], // Initial center coordinates (longitude, latitude)
-      zoom: 14 // Initial zoom level
-    });
-
-    function getQueryParam(param) {
-      let urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
-    }
-
-    person = getQueryParam('person');
-    let scriptName = "people/" + person;
-
-    if (scriptName) {
-      let scriptElement = document.createElement('script');
-      scriptElement.src = scriptName + ".js";
-      document.head.appendChild(scriptElement);
-    } else {
-      console.log('No scriptName parameter found in the URL');
-    }
-
-    map.on('load', function() {
-      loadRuns();
-    });
-
-    function loadRuns() {
-      if (typeof routes === 'undefined') {
-        setTimeout(() => { loadRuns(); }, 500);
-      } else {
-        processRoutes(routes, addRoutes);
-      }
-    }
-
-    function addRoutes(featureCollection) {
-      // Add a single layer for all routes
-      map.addLayer({
-        "id": "all-routes",
-        "type": "line",
-        "source": {
-          "type": "geojson",
-          "data": featureCollection
-        },
-        "layout": {
-          "line-join": "round",
-          "line-cap": "round"
-        },
-        "paint": {
-          "line-color": "#C21807",
-          "line-width": 1.7
-        }
-      });
-    }
-  </script>
 </body>
 </html>
