@@ -1,5 +1,5 @@
 // workerPool.js
-
+console.log("hi")
 const numberOfWorkers = navigator.hardwareConcurrency || 4;
 const workers = [];
 
