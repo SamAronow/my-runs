@@ -38,7 +38,7 @@ def get_activity_details(access_token, run_id):
         return None
 
 if __name__ == "__main__":
-    access_token = '96fb38b7b3f21b4b76d3caff487062a22dfdf343'
+    access_token = 'a69fed1fd258b90994a1bcf96480fe8aeb617453'
     activities = get_activities(access_token)
     file_path = "../people/sam.js"
     with open(file_path, 'r') as file:
