@@ -7,7 +7,7 @@ for (let i = 0; i < numberOfWorkers; i++) {
   workers.push(new Worker('worker.js'));
 }
 
-export function processRoutes(routes, callback) {
+function processRoutes(routes, callback) {
   let completedWorkers = 0;
   let featureCollections = [];
   const chunkSize = Math.ceil(routes.length / numberOfWorkers);
