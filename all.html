@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapbox with Custom Tileset</title>
+    <!-- Mapbox GL JS CSS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <!-- Mapbox GL JS -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script>
+        // Replace with your Mapbox access token
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtYXJudyIsImEiOiJjbGl1c2F1dDAwOW02M3BueTJwdDViNHY4In0.5F8W4nYLQk7H0xjRONCGkw'; // Replace with your Mapbox access token
+
+        // Initialize the map with a basic style
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/streets-v12', // Mapbox streets style
+            center: [-72.667, 41.551358], // Initial center coordinates [longitude, latitude]
+            zoom: 14 // Initial zoom level
+        });
+
+        // Add your custom tileset as a source
+        map.on('load', function () {
+            map.addSource('custom-tileset', {
+                'type': 'vector',
+                'url': 'mapbox://samarnw.6ex5nm8s' // Replace with your tileset ID
+            });
+
+            // Add a layer to visualize the tileset
+            map.addLayer({
+                'id': 'routes',
+                'type': 'line',
+                'source': 'custom-tileset',
+                'source-layer': 'wes_all', // Replace with the source layer name from your tileset
+                'layout': {},
+                'paint': {
+                    "line-color": "#C21807",
+                    "line-width": 1.7
+                }
+            });
+        });
+
+        // Add navigation controls to the map (optional)
+        map.addControl(new mapboxgl.NavigationControl());
+    </script>
+</body>
+</html>
