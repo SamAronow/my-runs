@@ -49,12 +49,11 @@
   }
 
   person = getQueryParam('person');
-
-  let scriptName = "featureCollections/"+person;
+  let scriptName = "featureCollections/"+person+".js";
 
   if (scriptName) {
     let scriptElement = document.createElement('script');
-    scriptElement.src = scriptName+".js";
+    scriptElement.src = scriptName;
     document.head.appendChild(scriptElement);
   }
   else {
@@ -75,6 +74,7 @@
   }
 
 function addRoutes(){
+    console.log(featureCollection)
   map.addLayer({
     "id": "all-routes",
     "type": "line",
@@ -92,6 +92,7 @@ function addRoutes(){
     }
   });
 }
+
 
   </script>
 

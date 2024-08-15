@@ -2,7 +2,7 @@ import json
 import re
 
 # Read the JavaScript file
-with open('people/sam.js', 'r') as file:
+with open('people/wes_all.js', 'r') as file:
     js_code = file.read()
 
 # Regular expression to find the JSON objects within the push statements
@@ -33,6 +33,7 @@ for route in routes:
             start_coords_array.append([start, coordinates])
 
 # Initialize the content for the JS file
+
 feature_collection_content = 'const featureCollection = {\n'
 feature_collection_content += '    "type": "FeatureCollection",\n'
 feature_collection_content += '    "features": [\n'
@@ -46,7 +47,7 @@ for start, coordinates in start_coords_array:
     feature_collection_content += '            },\n'
     feature_collection_content += '            "geometry": {\n'
     feature_collection_content += '                "type": "LineString",\n'
-    feature_collection_content += f'                "coordinates": {json.dumps(coordinates)}\n'
+    feature_collection_content += f'                "coordinates": {json.dumps(coordinates[0])}\n'
     feature_collection_content += '            }\n'
     feature_collection_content += '        },\n'
 
@@ -56,7 +57,7 @@ feature_collection_content += '    ]\n'
 feature_collection_content += '};\n'
 
 # Write the content to a new JS file
-with open('featureCollections/sam.js', 'w') as file:
+with open('featureCollections/wes_all.js', 'w') as file:
     file.write(feature_collection_content)
 
 print("feature_sam.js has been created successfully.")
