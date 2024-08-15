@@ -20,6 +20,7 @@ self.addEventListener('message', function(event) {
             }
         });
     }
+    console.log(featureCollection)
 
     // Send the processed data back to the main thread
     self.postMessage(featureCollection);
