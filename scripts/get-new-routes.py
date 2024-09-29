@@ -38,9 +38,9 @@ def get_activity_details(access_token, run_id):
         return None
 
 if __name__ == "__main__":
-    access_token = '5d8142e700c7c3eceecd4295b0903266862140d7'
+    access_token = '8de23f5f44e602fe5de83a69b4d472ac1e3ec85b'
     activities = get_activities(access_token)
-    file_path = "people/wes_sam.js"
+    file_path = "people/sam.js"
     with open(file_path, 'r') as file:
         lines = file.readlines()
         last_line = lines[-1].strip()
