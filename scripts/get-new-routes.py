@@ -7,7 +7,7 @@ from datetime import datetime
 def get_activities(access_token):
     url = 'https://www.strava.com/api/v3/athlete/activities'
     headers = {'Authorization': f'Bearer {access_token}'}
-    params = {'per_page': 10, 'page': 1}
+    params = {'per_page': 100, 'page': 1}
 
     response = requests.get(url, headers=headers, params=params)
 
@@ -38,9 +38,9 @@ def get_activity_details(access_token, run_id):
         return None
 
 if __name__ == "__main__":
-    access_token = '8de23f5f44e602fe5de83a69b4d472ac1e3ec85b'
+    access_token = 'e09489b9c4d4f79c39b74d2c583b911a6be015f9'
     activities = get_activities(access_token)
-    file_path = "people/sam.js"
+    file_path = "people/wes_sam.js"
     with open(file_path, 'r') as file:
         lines = file.readlines()
         last_line = lines[-1].strip()
